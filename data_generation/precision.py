@@ -17,7 +17,7 @@ for color in shades(col.emp, 4):  # four independent runs
 
 # binomial precision: std of the estimate, sqrt(p(1-p)/N)
 sd = np.sqrt(p_true * (1 - p_true) / N_values)
-ax.plot(N_values, sd, **ref, label=r"$\sqrt{p(1-p)/N}$")
+ax.plot(N_values, sd, **ref, label=r"√$(p(1-p)/N)$")
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlabel("$N$")

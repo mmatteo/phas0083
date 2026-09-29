@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import to_rgb
 from types import SimpleNamespace
-from scipy import stats, optimize, integrate, special
+from scipy import stats, integrate
 from scipy.stats import (norm, poisson, binom, chi2,
                          expon, gamma, gaussian_kde)
 from scipy.optimize import minimize, minimize_scalar
