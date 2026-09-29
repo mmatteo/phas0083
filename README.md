@@ -2,16 +2,19 @@
 
 The Python scripts printed in the lecture notes of PHAS0083 (University
 College London, Matteo Agostini), one file per figure, grouped by chapter.
-Each file is the script as printed, preceded by the preamble that every
-script of the notes assumes (`preamble.py`: the imports, the random number
-generator with its seed, the colours), so that it runs on its own:
+Each file is the script as printed in the notes, preceded by three lines
+that import `preamble.py`, the preamble every script of the notes assumes
+(the imports, the random number generator with its seed, the colours):
 
 ```
 pip install -r requirements.txt
 python bootstrap/edf-quantiles-margin.py
 ```
 
-The seed is fixed, so a script produces the numbers quoted in the notes;
+A script needs `preamble.py` at the top of the repository (it finds it from
+any folder); to run one elsewhere, copy `preamble.py` beside it or paste its
+content at the top. The seed is fixed, so a script produces the numbers
+quoted in the notes;
 change it to see how the results vary from one simulation to the next.
 Sizes, fonts and styles of the plots differ from the notes, which draw them
 with their own settings.
