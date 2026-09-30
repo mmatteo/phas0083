@@ -8,7 +8,7 @@ number generator with its seed, the colours).
 
 ```
 pip install -r requirements.txt
-python bootstrap/edf.py
+python ch09/example_9.2.2.py
 ```
 
 A script finds `preamble.py` at the top of this repository from any folder;
