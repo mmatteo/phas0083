@@ -22,9 +22,12 @@ def lrt(x, y, tau):
                  - log_l(x, y, lam_hat, nu_hat, tau))
 
 
-tau, nu, B = 2.0, 50, 100_000
-x = rng.poisson(nu, size=B)
-y = rng.poisson(tau * nu, size=B)
+tau, B = 2.0, 100_000
+# MLE of nu under H0 from the observed pair (x, y):
+# nu_0_hat = (x + y) / (1 + tau); its value here
+nu_0_hat = 50
+x = rng.poisson(nu_0_hat, size=B)         # under H0
+y = rng.poisson(tau * nu_0_hat, size=B)
 T = np.array([lrt(xi, yi, tau) for xi, yi in zip(x, y)])
 c = np.quantile(T, 1 - 0.05)
 print(f"threshold for level 0.05: T > {c:.3f}")

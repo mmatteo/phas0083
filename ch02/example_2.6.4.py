@@ -1,4 +1,4 @@
-# Example 2.6.4 (Figure 2.11): Pmf and cdf of the score of a fair die
+# Example 2.6.4 (Figure 2.8): Pmf and cdf of the score of a fair die
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

@@ -1,4 +1,4 @@
-# Example 2.6.5 (Figure 2.12): Pdf and cdf of the standard normal distribution
+# Example 2.6.5 (Figure 2.9): Pdf and cdf of the standard normal distribution
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
