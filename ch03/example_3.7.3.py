@@ -1,4 +1,4 @@
-# Example 3.7.3 (Figure 3.15): Cdf of the detector response $X\sim\mathcal{N}(100, 25)$, with the probabilities read at $100\pm10$
+# Example 3.7.3 (Figure 3.17): Cdf of the detector response $X\sim\mathcal{N}(100, 25)$, with the probabilities read at $100\pm10$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

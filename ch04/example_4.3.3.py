@@ -5,7 +5,6 @@ from preamble import *  # imports, rng, colours: see preamble.py
 
 N = 500
 x = np.sort(rng.normal(0, 1, N))
-F_hat = np.arange(1, N + 1) / N
 
 probs = [0.025, 0.5, 0.975]
 q_hat = [x[int(np.ceil(N * p)) - 1] for p in probs]
@@ -14,8 +13,7 @@ for p, qh, qt in zip(probs, q_hat, q_true):
     print(f"p={p:.3f}: {qh:.3f} (true {qt:.3f})")
 
 fig, ax = plt.subplots()
-ax.step(x, F_hat, where="post", color=col.emp,
-        label=r"$\hat{F}_N$")
+ax.ecdf(x, color=col.emp, label=r"$\hat{F}_N$")
 for p, qh in zip(probs, q_hat):
     ax.hlines(p, -4, qh, **thr)
     ax.vlines(qh, 0, p, **thr)

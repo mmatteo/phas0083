@@ -1,4 +1,4 @@
-# Example 3.5.2 (Figure 3.9): Pmf and cdf of the Poisson distribution with $\nu=3$
+# Example 3.5.2 (Figure 3.11): Pmf and cdf of the Poisson distribution with $\nu=3$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

@@ -1,4 +1,4 @@
-# Example 3.7.4 (Figure 3.16): Binomial pmf with $p=0.3$ for increasing $n$, and the normal approximation for $n=100$
+# Example 3.7.4 (Figure 3.18): Binomial pmf with $p=0.3$ for increasing $n$, and the normal approximation for $n=100$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

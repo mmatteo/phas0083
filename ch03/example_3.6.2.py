@@ -1,4 +1,4 @@
-# Example 3.6.2 (Figure 3.13): Pdf and cdf of the exponential distribution with mean $\beta = 2$
+# Example 3.6.2 (Figure 3.15): Pdf and cdf of the exponential distribution with mean $\beta = 2$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

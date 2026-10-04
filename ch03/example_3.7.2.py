@@ -1,4 +1,4 @@
-# Example 3.7.2 (Figure 3.14): Pdf and cdf of the normal distribution $\mathcal{N}(0, 1)$
+# Example 3.7.2 (Figure 3.16): Pdf and cdf of the normal distribution $\mathcal{N}(0, 1)$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

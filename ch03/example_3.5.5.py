@@ -1,4 +1,4 @@
-# Example 3.5.5 (Figure 3.11): Cdf of the Poisson distribution with $\nu=10$
+# Example 3.5.5 (Figure 3.13): Cdf of the Poisson distribution with $\nu=10$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

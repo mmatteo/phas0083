@@ -7,6 +7,8 @@ u = np.linspace(-4, 4, 400)
 
 fig, axes = plt.subplots(3, 1, sharex=True)
 for ax, N in zip(axes, [20, 200, 2000]):
+    # the EDF by hand: a step of height 1/N at each ordered
+    # value; later scripts call ax.ecdf(x), which draws this
     x = np.sort(rng.normal(0, 1, N))
     F_hat = np.arange(1, N + 1) / N
     ax.plot(u, norm.cdf(u), color=col.cdf, label="$F$")

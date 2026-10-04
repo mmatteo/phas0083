@@ -1,4 +1,4 @@
-# Example 3.5.6 (Figure 3.12): Observed numbers of 10-s intervals with a given number of IMB events, and the Poisson expectation with $\nu=0.77$
+# Example 3.5.6 (Figure 3.14): Observed numbers of 10-s intervals with a given number of IMB events, and the Poisson expectation with $\nu=0.77$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

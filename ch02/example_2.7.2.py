@@ -1,4 +1,4 @@
-# Example 2.7.2 (Figure 2.10): Pdf of the standard normal distribution, and the probability within 1, 2 and 3 standard deviations of the mean
+# Example 2.7.2 (Figure 2.11): Pdf of the standard normal distribution, and the probability within 1, 2 and 3 standard deviations of the mean
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

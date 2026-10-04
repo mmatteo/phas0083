@@ -1,4 +1,4 @@
-# Example 3.5.3 (Figure 3.10): Poisson pmf for $\nu=0.7,3,10$ (top); binomial pmf with $p=3/N$ approaching the Poisson with $\nu=3$ (bottom)
+# Example 3.5.3 (Figure 3.12): Poisson pmf for $\nu=0.7,3,10$ (top); binomial pmf with $p=3/N$ approaching the Poisson with $\nu=3$ (bottom)
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

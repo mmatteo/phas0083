@@ -8,17 +8,12 @@ x = np.array([3.54, 5.13, 2.84, 4.48, 1.03, 16.92,
 n = x.size
 x_bar = x.mean()
 
-# EDF: a step of height 1/n at each ordered value
-x_sorted = np.sort(x)
-F_hat = np.arange(1, n + 1) / n
-
 # cdf of the fitted exponential model
 u = np.linspace(0, 20, 200)
 F_fit = stats.expon.cdf(u, scale=x_bar)
 
 fig, ax = plt.subplots()
-ax.step(x_sorted, F_hat, where="post", color=col.emp,
-        label="EDF")
+ax.ecdf(x, color=col.emp, label="EDF")   # steps of 1/n
 ax.plot(u, F_fit, color=col.cdf, label="fitted exponential")
 ax.set_xlabel(r"decay time [$\mu$s]")
 ax.set_ylabel("cdf")
