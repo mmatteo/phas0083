@@ -1,4 +1,4 @@
-# Example 6.3.6 (Figure 6.11): Means of samples of size $n=1,2,5,30$ from $U(0,1)$ (top to bottom), and the normal pdf of the central limit theorem
+# Example 6.3.6 (Figure 6.11): Means of samples of size $n=1,2,5,30$ from $\mathcal{U}(0,1)$ (top to bottom), and the normal pdf of the central limit theorem
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

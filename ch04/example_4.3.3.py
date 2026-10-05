@@ -1,27 +1,27 @@
-# Example 4.3.3 (Figure 4.5): EDF of $N=500$ draws from $\mathcal{N}(0,1)$, with its $0.025$, $0.5$ and $0.975$ quantiles and the true ones
+# Example 4.3.3 (Figure 4.5): Error of the estimated $P(-1<X<1)$ against $N$ in four runs, and the predicted binomial precision
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-N = 500
-x = np.sort(rng.normal(0, 1, N))
-
-probs = [0.025, 0.5, 0.975]
-q_hat = [x[int(np.ceil(N * p)) - 1] for p in probs]
-q_true = [norm.ppf(p) for p in probs]
-for p, qh, qt in zip(probs, q_hat, q_true):
-    print(f"p={p:.3f}: {qh:.3f} (true {qt:.3f})")
+p_true = norm.cdf(1) - norm.cdf(-1)   # P(-1 < X < 1)
+N_values = np.array([10, 30, 100, 300, 1000, 3000,
+                     1e4, 3e4, 1e5, 3e5, 1e6], dtype=int)
 
 fig, ax = plt.subplots()
-ax.ecdf(x, color=col.emp, label=r"$\hat{F}_N$")
-for p, qh in zip(probs, q_hat):
-    ax.hlines(p, -4, qh, **thr)
-    ax.vlines(qh, 0, p, **thr)
-ax.plot(q_true, probs, "x", color=col.data, ms=7, mew=1.5,
-        label="true quantile")
-ax.set_xlim(-4, 4)
-ax.set_xlabel("$x$")
-ax.set_ylabel("cdf")
+for color in shades(col.emp, 4):  # four independent runs
+    x = rng.normal(0, 1, N_values[-1])
+    inside = np.abs(x) < 1
+    p_hat = np.cumsum(inside)[N_values - 1] / N_values
+    ax.plot(N_values, np.abs(p_hat - p_true), "o-",
+            color=color)
+
+# binomial precision: std of the estimate, sqrt(p(1-p)/N)
+sd = np.sqrt(p_true * (1 - p_true) / N_values)
+ax.plot(N_values, sd, **ref, label=r"√$(p(1-p)/N)$")
+ax.set_xscale("log")
+ax.set_yscale("log")
+ax.set_xlabel("$N$")
+ax.set_ylabel(r"$|\hat{F}_N - p|$")
 ax.legend()
 
 plt.show()

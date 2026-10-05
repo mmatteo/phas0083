@@ -9,14 +9,13 @@ pmf = np.array([1 - p, p])
 cdf = np.cumsum(pmf)
 
 fig, ax = plt.subplots()
-ax.vlines(x, 0, pmf, colors=col.pdf)
 ax.plot(x, pmf, "o", color=col.pdf, label="pmf")
+ax.vlines(x, 0, pmf, colors=col.pdf)
 ax.plot(x, cdf, "o", color=col.cdf, label="cdf")
-ax.hlines([0, *cdf], [-0.5, *x], [0, *(x + 0.5)],
-          colors=col.cdf)
+ax.hlines(cdf, x, x + 1, colors=col.cdf)
 ax.set_xticks(x)
 ax.set_xlabel("$x$")
 ax.set_ylabel("probability")
-ax.legend(loc="upper left")
+ax.legend()
 
 plt.show()

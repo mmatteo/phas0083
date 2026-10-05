@@ -1,4 +1,4 @@
-# Example 4.3.5 (Figure 4.6): Distance of simulated photons from a point source: histogram, KDE and the true Rayleigh pdf
+# Example 4.5.3 (Figure 4.8): Distance of simulated photons from a point source: histogram, KDE and the true Rayleigh pdf
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

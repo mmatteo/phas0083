@@ -1,16 +1,16 @@
-# Example 3.3.2 (Figure 3.6): Pmf and cdf of the discrete uniform on $\{1,\dots,6\}$ (top); pdf and cdf of the continuous uniform on $(0,2)$ (bottom)
+# Example 3.3.2 (Figure 3.6): Pmf and cdf of the discrete uniform on $\{0,\dots,9\}$ (top); pdf and cdf of the continuous uniform on $(0,2)$ (bottom)
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
 fig, axes = plt.subplots(2, 1)
 
-# discrete: the score of a die
-x = np.arange(1, 7)
-pmf = np.full(6, 1 / 6)
+# discrete: a random digit
+x = np.arange(0, 10)
+pmf = np.full(10, 1 / 10)
 cdf = np.cumsum(pmf)
-axes[0].vlines(x, 0, pmf, colors=col.pdf)
 axes[0].plot(x, pmf, "o", color=col.pdf, label="pmf")
+axes[0].vlines(x, 0, pmf, colors=col.pdf)
 axes[0].plot(x, cdf, "o", color=col.cdf, label="cdf")
 axes[0].hlines(cdf, x, x + 1, colors=col.cdf)
 axes[0].set_xticks(x)
