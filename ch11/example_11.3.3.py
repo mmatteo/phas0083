@@ -1,4 +1,4 @@
-# Example 11.3.3 (Figure 11.4): Sample of 60 values from the peak-over-background model, with $\hat\mu$ and its 90\% confidence interval
+# Example 11.3.3 (Figure 11.9): Sample of 60 values from the peak-over-background model, with $\hat\mu$ and its 90\% confidence interval
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

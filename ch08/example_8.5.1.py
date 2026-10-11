@@ -10,7 +10,7 @@ x_bar = x.mean()
 B_values = [10, 20, 50, 100, 200, 500, 1000, 2000]
 
 fig, axes = plt.subplots(2, 1, sharex=True)
-for color in shades(col.emp, 4):  # four independent runs
+for color in shades(col.emp, 4):  # four repetitions
     bias_B, var_B = [], []
     for B in B_values:
         x_star = rng.exponential(scale=x_bar, size=(B, n))

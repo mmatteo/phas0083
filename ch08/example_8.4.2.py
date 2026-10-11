@@ -10,7 +10,7 @@ x_bar = x.mean()
 B_values = [19, 39, 99, 199, 399, 599, 799, 999]
 
 fig, ax = plt.subplots()
-for color in shades(col.emp, 4):  # four independent runs
+for color in shades(col.emp, 4):  # four repetitions
     q05, q95 = [], []
     for B in B_values:
         x_star = rng.exponential(scale=x_bar, size=(B, n))

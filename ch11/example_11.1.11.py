@@ -1,4 +1,4 @@
-# Example 11.1.11 (Figure 11.3): Test statistic of the sample $\mathbf{x}$ over $(\mu,\sigma^2)$, with the 68\%, 95\% and 99\% confidence regions from Wilks' theorem
+# Example 11.1.11 (Figure 11.4): Test statistic of the sample $\mathbf{x}$ over $(\mu,\sigma^2)$, with the 68\%, 95\% and 99\% confidence regions from Wilks' theorem
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
