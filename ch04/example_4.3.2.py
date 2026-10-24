@@ -1,4 +1,4 @@
-# Example 4.3.2 (Figure 4.7): ecdf of $N$ draws from $\mathcal{N}(0,1)$ and the true cdf, for $N=20$, $200$, $2000$ (top to bottom)
+# Example 4.3.2 (Figure 4.8): ecdf of $N$ draws from $\mathcal{N}(0,1)$ and the true cdf, for $N=20$, $200$, $2000$ (top to bottom)
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

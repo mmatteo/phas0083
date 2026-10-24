@@ -1,4 +1,4 @@
-# Example 4.3.3 (Figure 4.8): ecdf of $N=500$ draws from $\mathcal{N}(0,1)$, with its $0.025$, $0.5$ and $0.975$ quantiles and the true ones
+# Example 4.3.3 (Figure 4.9): ecdf of $N=500$ draws from $\mathcal{N}(0,1)$, with its $0.025$, $0.5$ and $0.975$ quantiles and the true ones
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

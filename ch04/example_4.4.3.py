@@ -1,4 +1,4 @@
-# Example 4.4.3 (Figure 4.10): The chain of Example 4.2.3 drawn $2000$ times: histogram and KDE of the released energies, and the normal pdf of variance $\sigma_0^2+\sigma^2$
+# Example 4.4.3 (Figure 4.11): The chain of Example 4.2.3 drawn $2000$ times: histogram and KDE of the released energies, and the normal pdf of variance $\sigma_0^2+\sigma^2$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

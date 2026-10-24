@@ -1,4 +1,4 @@
-# Example 4.2.3 (Figure 4.6): The chain drawn $2000$ times: the energy released in the detector against the Doppler-shifted energy of each photon, with the diagonal $e'=e$
+# Example 4.2.3 (Figure 4.7): The chain drawn $2000$ times: the energy released in the detector against the Doppler-shifted energy of each photon, with the diagonal $e'=e$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
