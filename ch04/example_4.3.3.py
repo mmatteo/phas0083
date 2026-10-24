@@ -6,9 +6,9 @@ from preamble import *  # imports, rng, colours: see preamble.py
 N = 500
 x = np.sort(rng.normal(0, 1, N))
 
+# quantiles of the ecdf, the ceil(pN)-th ordered draw, and F
 probs = [0.025, 0.5, 0.975]
-# the quantiles of the ecdf: the step function inverted at p
-q_hat = np.quantile(x, probs, method="inverted_cdf")
+q_hat = [x[int(np.ceil(p * N)) - 1] for p in probs]
 q_true = [norm.ppf(p) for p in probs]
 for p, qh, qt in zip(probs, q_hat, q_true):
     print(f"p={p:.3f}: {qh:.3f} (true {qt:.3f})")

@@ -3,26 +3,21 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-def poisson_modes(nu):
-    """Modes of a Poisson: two if nu is an integer."""
-    if abs(nu - round(nu)) < 1e-12:
-        return int(nu - 1), int(nu)
-    return (int(np.floor(nu)),)
-
-
 x = np.arange(0, 21)
 nu_values = [0.7, 3, 10]
-nu_ref = 3                # mean of the binomial comparison
-N_values = [5, 10, 100]   # p = nu_ref / N
+nu_ref = 3
+N_values = [5, 10, 100]
 
 fig, axes = plt.subplots(2, 1)
 for color, nu in zip(shades(col.pdf, 3), nu_values):
     pmf = poisson.pmf(x, nu)
+    modes = x[pmf == pmf.max()]
+    print(f"nu={nu}: mode {modes}")
     axes[0].vlines(x, 0, pmf, colors=[color])
     axes[0].plot(x, pmf, "o", color=color,
                  label=rf"$\nu={nu}$")
 
-# the Poisson is the limit the binomials approach
+# binomials with p = nu_ref / N against their Poisson limit
 pmf_ref = poisson.pmf(x, nu_ref)
 axes[1].vlines(x, 0, pmf_ref, colors=col.ref, alpha=0.4)
 axes[1].plot(x, pmf_ref, "o", color=col.ref,
@@ -37,13 +32,5 @@ for ax in axes:
     ax.set_ylabel("probability")
     ax.set_xlabel("number of occurrences")
     ax.legend()
-
-print("Poisson modes:")
-for nu in nu_values:
-    print(f"  nu={nu}: {poisson_modes(nu)}")
-print(f"Binomial modes, mean {nu_ref}:")
-for N in N_values:
-    mode = x[np.argmax(binom.pmf(x, N, nu_ref / N))]
-    print(f"  N={N}: {mode}")
 
 plt.show()

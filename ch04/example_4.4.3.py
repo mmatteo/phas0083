@@ -3,14 +3,16 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-E0, sigma0, sigma = 1000, 15, 20   # keV
+E0, sigma0, sigma = 1000, 15, 20
 N = 2000
 
+# the chain: Doppler-shifted energy, then the released one
 e = rng.normal(E0, sigma0, N)
 e_rel = rng.normal(e, sigma)
 
+# kernel density estimate, and the normal pdf to compare
 kde = gaussian_kde(e_rel)
-s = np.hypot(sigma0, sigma)       # sqrt(sigma0^2 + sigma^2)
+s = np.sqrt(sigma0**2 + sigma**2)
 u = np.linspace(E0 - 4 * s, E0 + 4 * s, 200)
 
 fig, ax = plt.subplots()

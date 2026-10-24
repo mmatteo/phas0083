@@ -5,12 +5,14 @@ from preamble import *  # imports, rng, colours: see preamble.py
 
 import seaborn as sns
 
-E0, sigma0, sigma = 1000, 15, 20   # keV
+E0, sigma0, sigma = 1000, 15, 20
 N = 2000
-e = rng.normal(E0, sigma0, N)      # the latent variable
-e_rel = rng.normal(e, sigma)       # released, given each e
 
-# the joint pdf as contours, the marginals on the sides
+# the chain: Doppler-shifted energy, then the released one
+e = rng.normal(E0, sigma0, N)
+e_rel = rng.normal(e, sigma)
+
+# joint pdf as contours, the marginal pdfs on the sides
 g = sns.jointplot(x=e, y=e_rel, kind="kde", color=col.pdf,
                   marginal_kws={"fill": True})
 g.set_axis_labels("Doppler-shifted energy $e$ [keV]",

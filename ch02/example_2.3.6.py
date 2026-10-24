@@ -9,7 +9,8 @@ p_none = np.cumprod((365 - N + 1) / 365)
 p = 1 - p_none
 
 n50 = N[p >= 0.5][0]
-print(f"P(A) > 0.5 from N = {n50}: P(A) = {p[n50 - 1]:.3f}")
+print(f"P(A) >= 0.5 from N = {n50}:"
+      f" P(A) = {p[p >= 0.5][0]:.3f}")
 
 fig, ax = plt.subplots()
 ax.plot(N, p, ".", color=col.pdf)

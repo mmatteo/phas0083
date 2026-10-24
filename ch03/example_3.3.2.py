@@ -5,7 +5,7 @@ from preamble import *  # imports, rng, colours: see preamble.py
 
 fig, axes = plt.subplots(2, 1)
 
-# discrete: a random digit
+# discrete uniform on {0, ..., 9}
 x = np.arange(0, 10)
 pmf = np.full(10, 1 / 10)
 cdf = np.cumsum(pmf)
@@ -16,7 +16,7 @@ axes[0].hlines(cdf, x, x + 1, colors=col.cdf)
 axes[0].set_xticks(x)
 axes[0].set_xlabel("$x$")
 
-# continuous: uniform on (a, b)
+# continuous uniform on (a, b)
 a, b = 0, 2
 u = np.linspace(-0.5, 2.5, 400)
 pdf = np.where((u >= a) & (u <= b), 1 / (b - a), 0)

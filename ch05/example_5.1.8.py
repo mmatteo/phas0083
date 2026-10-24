@@ -3,23 +3,27 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-f = np.zeros((13, 6))   # joint pmf f[x, y], by the values
+# joint pmf f(x, y) of the sum and the absolute difference
+f = np.zeros((13, 6))
 for d1 in range(1, 7):
     for d2 in range(1, 7):
         f[d1 + d2, abs(d1 - d2)] += 1 / 36
 
-f_X = f.sum(axis=1)          # summed over y
-f_Y = f.sum(axis=0)          # summed over x
+# marginal pmfs, summed over the other variable
+f_X, f_Y = f.sum(axis=1), f.sum(axis=0)
 print(f"f_X(6) = {f_X[6]:.4f}")
 print(f"f_Y(0) = {f_Y[0]:.4f}")
 
-x = np.arange(2, 13)         # the values of the sum
-y = np.arange(6)             # the values of the difference
+x = np.arange(2, 13)
+y = np.arange(6)
 fig, axes = plt.subplots(2, 1)
-for ax, v, f_v, n in zip(axes, [x, y], [f_X, f_Y], "xy"):
-    ax.vlines(v, 0, f_v[v], colors=col.pdf)
-    ax.plot(v, f_v[v], "o", color=col.pdf)
-    ax.set_xlabel(f"${n}$")
-    ax.set_ylabel(f"$f_{n.upper()}({n})$")
+axes[0].vlines(x, 0, f_X[x], colors=col.pdf)
+axes[0].plot(x, f_X[x], "o", color=col.pdf)
+axes[0].set_xlabel("$x$")
+axes[0].set_ylabel("$f_X(x)$")
+axes[1].vlines(y, 0, f_Y[y], colors=col.pdf)
+axes[1].plot(y, f_Y[y], "o", color=col.pdf)
+axes[1].set_xlabel("$y$")
+axes[1].set_ylabel("$f_Y(y)$")
 
 plt.show()

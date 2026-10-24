@@ -3,17 +3,15 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-E0, sigma0 = 1000, 15   # line energy, Doppler width, keV
-sigma = 20               # detector resolution, keV
-N = 2000                 # draws of the chain
+E0, sigma0, sigma = 1000, 15, 20
+N = 2000
 
-# vectorised: one call draws the N values, no Python loop
-e = rng.normal(E0, sigma0, N)     # Doppler-shifted
-# a vector of means: the N conditional draws in one call
-e_rel = rng.normal(e, sigma)      # released, given each e
+# the chain: Doppler-shifted energy, then the released one
+e = rng.normal(E0, sigma0, N)
+e_rel = rng.normal(e, sigma)
 print(f"std of the Doppler-shifted energies: {e.std():.1f}")
 print(f"std of the released ones: {e_rel.std():.1f} keV"
-      f" (sqrt(15^2 + 20^2) = {np.hypot(15, 20):.1f})")
+      f" (sqrt(15^2+20^2) = {np.sqrt(15**2 + 20**2):.1f})")
 
 fig, ax = plt.subplots()
 ax.plot(e, e_rel, "o", color=col.emp, ms=2, alpha=0.3)

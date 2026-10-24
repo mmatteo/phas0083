@@ -15,7 +15,7 @@ print(f"draws: var {Y.var():.0f}, mean {Y.mean():.0f}")
 
 y = np.linspace(20, 260, 400)
 F_exact = norm.cdf(np.sqrt(y), mu, sigma)
-F_delta = norm.cdf(y, mu**2, var_delta**0.5)
+F_delta = norm.cdf(y, mu**2, np.sqrt(var_delta))
 fig, axes = plt.subplots(2, 1)
 for ax, lim in zip(axes, [(20, 260), (30, 90)]):
     ax.plot(y, F_exact, color=col.cdf, label="exact $F_Y$")

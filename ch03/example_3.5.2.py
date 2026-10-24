@@ -15,7 +15,6 @@ ax.plot(x, cdf, "o", color=col.cdf, label="cdf")
 ax.hlines(cdf, x, x + 1, colors=col.cdf)
 ax.set_xlabel("$x$")
 ax.set_ylabel("probability")
-ax.set_title(r"$\nu = 3$")
 ax.legend()
 
 plt.show()

@@ -8,7 +8,7 @@ x = np.linspace(-4, 4, 400)
 fig, ax = plt.subplots()
 ax.plot(x, norm.pdf(x), color=col.pdf)
 for k in [1, 2, 3]:
-    p = norm.cdf(k) - norm.cdf(-k)   # P(-k < X < k)
+    p = norm.cdf(k) - norm.cdf(-k)
     print(f"P(|X| < {k}) = {p:.4f}")
     ax.axvline(-k, **thr)
     ax.axvline(k, **thr)
