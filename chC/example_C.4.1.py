@@ -5,16 +5,22 @@ from preamble import *  # imports, rng, colours: see preamble.py
 
 E = np.array([60, 122, 356, 662, 1173, 1332])
 sigma = np.array([5, 5, 8, 10, 15, 15])
+# the sums of the normal equations that do not depend on
+# the measured heights
 wt = 1 / sigma**2
-S, Sx, Sxx = wt.sum(), (wt * E).sum(), (wt * E**2).sum()
+S = wt.sum()
+Sx = (wt * E).sum()
+Sxx = (wt * E**2).sum()
 D = S * Sxx - Sx**2
 
 
+# the least-squares offset and gain of the heights h
 def fit(h):
-    """Least-squares offset and gain of the heights h."""
-    Sy, Sxy = (wt * h).sum(), (wt * E * h).sum()
-    return ((Sxx * Sy - Sx * Sxy) / D,
-            (S * Sxy - Sx * Sy) / D)
+    Sy = (wt * h).sum()
+    Sxy = (wt * E * h).sum()
+    a_hat = (Sxx * Sy - Sx * Sxy) / D
+    b_hat = (S * Sxy - Sx * Sy) / D
+    return a_hat, b_hat
 
 
 a_hat, b_hat = fit(rng.normal(20 + 1.5 * E, sigma))
@@ -26,13 +32,18 @@ a, b = np.meshgrid(np.linspace(a_hat - 15, a_hat + 15, 200),
 dchi2 = (S * (a - a_hat)**2 + Sxx * (b - b_hat)**2
          + 2 * Sx * (a - a_hat) * (b - b_hat))
 
-# 1000 simulated calibrations from the fitted line
-h_star = rng.normal(a_hat + b_hat * E, sigma, (1000, 6))
-stars = np.array([fit(h) for h in h_star])
-da, db = stars[:, 0] - a_hat, stars[:, 1] - b_hat
+# 1000 simulated calibrations from the fitted line, and
+# the fraction of their estimates inside the 68% region
+B = 1000
+stars = np.zeros((B, 2))
+for i in range(B):
+    h_star = rng.normal(a_hat + b_hat * E, sigma)
+    stars[i] = fit(h_star)
+da = stars[:, 0] - a_hat
+db = stars[:, 1] - b_hat
 inside = np.mean(S * da**2 + Sxx * db**2
                  + 2 * Sx * da * db < 2.30)
-print(f"simulated fits inside the 68% region: {inside:.2f}")
+print(f"fits inside the 68% region: {inside:.2f}")
 
 fig, ax = plt.subplots()
 ax.plot(stars[:, 0], stars[:, 1], "o", color=col.emp, ms=1,

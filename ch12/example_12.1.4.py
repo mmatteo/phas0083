@@ -3,12 +3,14 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-n, sigma = 10, 1
+n = 10
+sigma = 1
 B = 10_000
 
 
+# the two-sided p-values of the z test of mu = 0 for B
+# samples of size n drawn at the given mu
 def p_values(mu):
-    """Two-sided p-values of the z test of mu = 0."""
     x = rng.normal(mu, sigma, (B, n))
     z = x.mean(axis=1) / (sigma / np.sqrt(n))
     return 2 * norm.sf(np.abs(z))
@@ -23,7 +25,7 @@ for ax, mu, label in zip(axes, [0, 0.8], labels):
     ax.axhline(1, **ref)
     ax.set_title(label)
     ax.set_ylabel("density")
-    print(f"{label}: P(p < 0.05) = {np.mean(p < 0.05):.3f}")
+    print(f"{label}: P(p<0.05) = {np.mean(p < 0.05):.3f}")
 axes[1].set_xlabel("p-value")
 
 plt.show()

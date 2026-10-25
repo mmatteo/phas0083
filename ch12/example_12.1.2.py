@@ -3,30 +3,40 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
+# -2 log likelihood ratio of the on/off model, with the
+# MLE of lambda kept at or above zero
 def nlrt(x, lambda_0, nu):
-    """-2 log likelihood ratio of the on/off model."""
     lambda_hat = np.maximum(0, x - nu)
     return (-2 * poisson.logpmf(x, lambda_0 + nu)
             + 2 * poisson.logpmf(x, lambda_hat + nu))
 
 
-lambda_0, nu, alpha = 1000, 1000, 0.05
-x_star = rng.poisson(lambda_0 + nu, size=1_000_000)
-T = nlrt(x_star, lambda_0, nu)
-c = np.quantile(T, 1 - alpha)
-t_obs = nlrt(2100, lambda_0, nu)
-print(f"threshold {c:.2f}, p-value of x_obs=2100: "
-      f"{chi2.sf(t_obs, df=1):.3f}")
+lambda_0 = 1000
+nu = 1000
+alpha = 0.05
+B = 1_000_000
+x_obs = 2100
 
-t = np.linspace(0, T.max(), 2000)
+# the simulated statistic under H0 and the threshold, the
+# (B + 1)(1 - alpha)-th ordered value
+x_star = rng.poisson(lambda_0 + nu, size=B)
+T_sorted = np.sort(nlrt(x_star, lambda_0, nu))
+c = T_sorted[int((B + 1) * (1 - alpha)) - 1]
+# the observed statistic and its p-value from the
+# chi-squared survival function
+t_obs = nlrt(x_obs, lambda_0, nu)
+p_value = chi2.sf(t_obs, df=1)
+print(f"threshold {c:.2f}")
+print(f"p-value of x_obs={x_obs}: {p_value:.3f}")
+
+t = np.linspace(0, T_sorted.max(), 2000)
 fig, ax = plt.subplots()
 ax.plot(t, chi2.sf(t, df=1), color=col.cdf)
-for value, style, label in [
-        (c, thr, "$c$"),
-        (t_obs, dict(color=col.data),
-         r"$\tilde\lambda(x_\mathrm{obs})$")]:
-    ax.axvline(value, label=label, **style)
-    ax.hlines(chi2.sf(value, df=1), 0, value, **style)
+ax.axvline(c, label="$c$", **thr)
+ax.hlines(chi2.sf(c, df=1), 0, c, **thr)
+ax.axvline(t_obs, color=col.data,
+           label=r"$\tilde\lambda(x_\mathrm{obs})$")
+ax.hlines(p_value, 0, t_obs, color=col.data)
 ax.set_xlim(0, 6)
 ax.set_ylim(0, 0.1)
 ax.set_xlabel(r"$\tilde\lambda(x)$")

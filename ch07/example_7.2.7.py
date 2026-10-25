@@ -1,4 +1,4 @@
-# Example 7.2.7 (Figure 7.7): Likelihood of $(\mu,\sigma^2)$ for the sample $\mathbf{x}$ of a normal population
+# Example 7.2.7 (Figure 7.5): Likelihood of $(\mu,\sigma^2)$ for the sample $\mathbf{x}$ of a normal population
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
@@ -14,8 +14,8 @@ for xi in x:
 
 # the grid point of the maximum
 best = L == L.max()
-print(f"maximum at mu = {mu_grid[best][0]:.3f},"
-      f" sigma^2 = {s2_grid[best][0]:.4f}")
+print(f"maximum at mu = {mu_grid[best][0]:.3f}")
+print(f"           sigma^2 = {s2_grid[best][0]:.4f}")
 
 fig, ax = plt.subplots()
 contour = ax.contourf(mu_grid, s2_grid, L, levels=30,

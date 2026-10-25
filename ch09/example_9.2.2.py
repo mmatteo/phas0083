@@ -4,12 +4,15 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
 x = np.array([1.1, 0.9, 1.4, 1.0, 1.2])
+sigma = 1
 
 
-def likelihood(mu, sigma=1):
-    """Product of the normal pdfs; mu can be an array."""
-    mu = np.array(mu).reshape(-1, 1)
-    return np.prod(norm.pdf(x, mu, sigma), axis=1)
+# the likelihood of mu: the product of the pdfs of the x_i
+def likelihood(mu):
+    L = 1
+    for xi in x:
+        L = L * norm.pdf(xi, mu, sigma)
+    return L
 
 
 theta = np.linspace(0, 2, 200)
@@ -18,13 +21,15 @@ theta_hat = x.mean()
 
 fig, ax = plt.subplots()
 ax.plot(theta, likelihood(theta), color=col.like)
-marks = [(theta_0, ":", r"$\theta_0$"),
-         (theta_hat, "-.", r"$\hat\theta$")]
-for value, dash, label in marks:
-    L = likelihood(value)
-    ax.vlines(value, 0, L, color=col.thr, ls=dash,
-              label=label)
-    ax.hlines(L, 0, value, color=col.thr, ls=dash)
+# the likelihood at theta_0 and at the MLE
+L_0 = likelihood(theta_0)
+L_hat = likelihood(theta_hat)
+ax.vlines(theta_0, 0, L_0, color=col.thr, ls=":",
+          label=r"$\theta_0$")
+ax.hlines(L_0, 0, theta_0, color=col.thr, ls=":")
+ax.vlines(theta_hat, 0, L_hat, color=col.thr, ls="-.",
+          label=r"$\hat\theta$")
+ax.hlines(L_hat, 0, theta_hat, color=col.thr, ls="-.")
 ax.set_xlabel(r"$\theta$")
 ax.set_ylabel("likelihood")
 ax.legend()

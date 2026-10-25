@@ -9,9 +9,9 @@ N = 2000
 # the chain: Doppler-shifted energy, then the released one
 e = rng.normal(E0, sigma0, N)
 e_rel = rng.normal(e, sigma)
-print(f"std of the Doppler-shifted energies: {e.std():.1f}")
-print(f"std of the released ones: {e_rel.std():.1f} keV"
-      f" (sqrt(15^2+20^2) = {np.sqrt(15**2 + 20**2):.1f})")
+print(f"std of Doppler-shifted energy: {e.std():.1f}")
+print(f"std of released energies: {e_rel.std():.1f}")
+print(f"sqrt(15^2 + 20^2) = {np.sqrt(15**2 + 20**2):.1f}")
 
 fig, ax = plt.subplots()
 ax.plot(e, e_rel, "o", color=col.emp, ms=2, alpha=0.3)

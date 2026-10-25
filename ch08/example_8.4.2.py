@@ -10,9 +10,13 @@ x_bar = x.mean()
 B_values = [19, 39, 99, 199, 399, 599, 799, 999]
 
 fig, ax = plt.subplots()
-for color in shades(col.emp, 4):  # four repetitions
-    q05, q95 = [], []
+# four repetitions of the simulation at every B
+for color in shades(col.emp, 4):
+    q05 = []
+    q95 = []
     for B in B_values:
+        # the ordered replicates of t* - t, the quantiles
+        # read as the (B + 1) p-th ordered values
         x_star = rng.exponential(scale=x_bar, size=(B, n))
         d = np.sort(x_star.mean(axis=1)) - x_bar
         q05.append(d[int((B + 1) * 0.05) - 1])
@@ -20,7 +24,8 @@ for color in shades(col.emp, 4):  # four repetitions
     ax.plot(B_values, q05, "o-", color=color)
     ax.plot(B_values, q95, "o-", color=color)
 
-# exact: the mean of n exponentials is Gamma(n, x_bar/n)
+# the exact quantiles: the mean of n exponential variables
+# follows Gamma(n, x_bar / n)
 for p in [0.05, 0.95]:
     q = stats.gamma.ppf(p, n, scale=x_bar / n) - x_bar
     ax.axhline(q, **ref)

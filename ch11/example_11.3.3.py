@@ -9,16 +9,20 @@ sigma = 1.0
 alpha = 0.10
 
 
-def chisq_lrt(mu_0, x, sigma):
-    """Likelihood-ratio statistic for the mean."""
+# the likelihood-ratio statistic for the mean of a normal
+# sample with known sigma
+def nlrt(mu_0, x, sigma):
     return x.size * ((x.mean() - mu_0) / sigma)**2
 
 
+# the interval: the values of mu_0 at which the statistic
+# stays below the chi-squared threshold
 mu_hat = x.mean()
 mu_grid = np.linspace(mu_hat - 3, mu_hat + 3, 1000)
-T = chisq_lrt(mu_grid, x, sigma)
-inside = T <= chi2.ppf(1 - alpha, df=1)
-low, high = mu_grid[inside].min(), mu_grid[inside].max()
+T = nlrt(mu_grid, x, sigma)
+inside = mu_grid[T <= chi2.ppf(1 - alpha, df=1)]
+low = inside.min()
+high = inside.max()
 print(f"mu_hat = {mu_hat:.2f}, I = [{low:.2f}, {high:.2f}]")
 
 fig, ax = plt.subplots()

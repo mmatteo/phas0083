@@ -7,8 +7,12 @@ nu = 2000
 x_obs = 2100
 x = np.arange(1900, 2200)
 
+# the p-value: one minus the cdf at the observed count
+p_value = 1 - poisson.cdf(x_obs, nu)
+print(f"p-value of x_obs={x_obs}: {p_value:.3f}")
+
 fig, ax = plt.subplots()
-ax.plot(x, poisson.sf(x, nu), color=col.cdf,
+ax.plot(x, 1 - poisson.cdf(x, nu), color=col.cdf,
         label="$1-F(x)$ under $H_0$")
 ax.axvline(x_obs, color=col.data,
            label=r"$x_\mathrm{obs}$")

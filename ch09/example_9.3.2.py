@@ -3,13 +3,13 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
+# the first rule rejects if all five trials succeed
 def beta_1(theta):
-    """Reject if all five trials succeed."""
     return theta**5
 
 
+# the second rule rejects if at least three succeed
 def beta_2(theta):
-    """Reject if at least three trials succeed."""
     return (comb(5, 3) * theta**3 * (1 - theta)**2
             + comb(5, 4) * theta**4 * (1 - theta)
             + comb(5, 5) * theta**5)

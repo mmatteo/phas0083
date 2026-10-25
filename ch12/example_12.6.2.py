@@ -6,18 +6,23 @@ from preamble import *  # imports, rng, colours: see preamble.py
 n_bins = 7
 x = rng.uniform(-3, 3, size=40)
 
-edges = np.linspace(-3, 3, n_bins)
-O, _ = np.histogram(x, bins=edges)  # noqa: E741
-E = x.size * np.diff(norm.cdf(edges))
-T = np.sum((O - E)**2 / E)
-p_value = 1 - chi2.cdf(T, n_bins - 1)
+# the observed counts, and the expected counts from the
+# model cdf at the bin edges
+edges = np.linspace(-3, 3, n_bins + 1)
+observed, _ = np.histogram(x, bins=edges)
+expected = x.size * np.diff(norm.cdf(edges))
+# the statistic and its p-value, one minus the chi-squared
+# cdf, from the survival function (exact for tiny values)
+T = np.sum((observed - expected)**2 / expected)
+p_value = chi2.sf(T, n_bins - 1)
 print(f"T = {T:.1f}, p-value = {p_value:.2g}")
 
 centres = (edges[1:] + edges[:-1]) / 2
 fig, ax = plt.subplots()
-ax.bar(centres, O, width=0.9, color=col.hist,
+ax.bar(centres, observed, width=0.8, color=col.hist,
        label="observed")
-ax.plot(centres, E, "o", color=col.ref, label="expected")
+ax.plot(centres, expected, "o", color=col.ref,
+        label="expected")
 ax.set_xlabel("$x$")
 ax.set_ylabel("counts")
 ax.legend()

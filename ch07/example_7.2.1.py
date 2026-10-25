@@ -1,4 +1,4 @@
-# Example 7.2.1 (Figure 7.5): Pmfs of the Poisson models with $\nu=3.0$ and $\nu=5.5$
+# Example 7.2.1 (Figure 7.3): Pmfs of the Poisson models with $\nu=3.0$ and $\nu=5.5$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

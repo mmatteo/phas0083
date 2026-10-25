@@ -1,4 +1,4 @@
-# Example 7.2.2 (Figure 7.6): Probability of observing $x=3$ as a function of $\nu$, with its maximum
+# Example 7.2.2 (Figure 7.4): Probability of observing $x=3$ as a function of $\nu$, with its maximum
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

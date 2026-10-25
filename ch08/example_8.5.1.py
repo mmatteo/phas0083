@@ -10,9 +10,12 @@ x_bar = x.mean()
 B_values = [10, 20, 50, 100, 200, 500, 1000, 2000]
 
 fig, axes = plt.subplots(2, 1, sharex=True)
-for color in shades(col.emp, 4):  # four repetitions
-    bias_B, var_B = [], []
+# four repetitions of the simulation at every B
+for color in shades(col.emp, 4):
+    bias_B = []
+    var_B = []
     for B in B_values:
+        # the replicates, then Bias_B* and Var_B*
         x_star = rng.exponential(scale=x_bar, size=(B, n))
         t_star = x_star.mean(axis=1)
         bias_B.append(t_star.mean() - x_bar)
@@ -20,7 +23,7 @@ for color in shades(col.emp, 4):  # four repetitions
     axes[0].plot(B_values, bias_B, "o-", color=color)
     axes[1].plot(B_values, var_B, "o-", color=color)
 
-# exact values under the fitted model
+# the exact values under the fitted model, 0 and x_bar^2 / n
 axes[0].axhline(0, **ref)
 axes[1].axhline(x_bar**2 / n, **ref)
 axes[0].set_ylabel("bias")

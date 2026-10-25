@@ -3,20 +3,26 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
+# the negative log-likelihood of the two-run model, up to
+# constant terms
 def nll(lam, nu, x, y, tau):
-    """Negative log-likelihood of the two-run model."""
     return ((lam + nu) - x * np.log(lam + nu)
             + tau * nu - y * np.log(tau * nu))
 
 
-x, y, tau = 14, 18, 2.0
-lam_hat, nu_hat = max(0, x - y / tau), y / tau
+x = 14
+y = 18
+tau = 2.0
+# the MLEs, with lambda kept at or above zero
+lam_hat = max(0, x - y / tau)
+nu_hat = y / tau
 print(f"MLEs: lambda {lam_hat:.1f}, nu {nu_hat:.1f}")
 
+# the negative log-likelihood above its minimum on a grid
 lam, nu = np.meshgrid(np.linspace(0, 14, 200),
                       np.linspace(4, 16, 200))
-z = nll(lam, nu, x, y, tau)
-z -= nll(lam_hat, nu_hat, x, y, tau)
+z = (nll(lam, nu, x, y, tau)
+     - nll(lam_hat, nu_hat, x, y, tau))
 
 fig, ax = plt.subplots()
 cs = ax.contour(lam, nu, z, levels=[0.5, 2, 4.5],

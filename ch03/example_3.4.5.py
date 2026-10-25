@@ -13,7 +13,7 @@ for ax, row in zip(axes, cases):
         x = np.arange(n + 1)
         pmf = binom.pmf(x, n, p)
         modes = x[pmf == pmf.max()]
-        print(f"n={n}, p={p}: (n+1)p = {(n + 1) * p},"
+        print(f"n={n}, p={p}: (n+1)p={(n + 1) * p},"
               f" mode {modes}")
         ax.vlines(x, 0, pmf, colors=[color])
         ax.plot(x, pmf, "o", color=color,

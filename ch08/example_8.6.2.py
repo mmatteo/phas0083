@@ -1,4 +1,4 @@
-# Example 8.6.2 (Figure 8.6): Nonparametric bootstrap replicates of the sample mean
+# Example 8.6.2 (Figure 8.7): Nonparametric bootstrap replicates of the sample mean
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
@@ -9,10 +9,12 @@ n = x.size
 x_bar = x.mean()
 B = 999
 
-# resample the data with replacement
+# B bootstrap samples drawn with replacement from the data,
+# and the replicates of the sample mean
 x_star = rng.choice(x, size=(B, n), replace=True)
 t_star = x_star.mean(axis=1)
 
+# Bias_B* and Var_B* of the mean
 bias_B = t_star.mean() - x_bar
 var_B = t_star.var(ddof=1)
 print(f"Bias_B*(mean) = {bias_B:.3f}")

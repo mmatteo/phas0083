@@ -10,7 +10,8 @@ x_bar = x.mean()
 
 fig, axes = plt.subplots(2, 1, sharex=True)
 for ax, B in zip(axes, [99, 999]):
-    # B bootstrap samples of size n from the fitted model
+    # B bootstrap samples of size n from the fitted model,
+    # and the replicates of the sample mean
     x_star = rng.exponential(scale=x_bar, size=(B, n))
     t_star = x_star.mean(axis=1)
     ax.hist(t_star, density=True, color=col.hist)

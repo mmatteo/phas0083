@@ -1,4 +1,4 @@
-# Example 6.3.2 (Figure 6.8): Sample mean, variance and correlation of the arrival times on the first $m$ observations, with the population values
+# Example 6.3.2 (Figure 6.7): Sample mean, variance and correlation of the arrival times on the first $m$ observations, with the population values
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

@@ -13,8 +13,8 @@ x_pit = np.sqrt(u)
 x_cand = rng.uniform(0, 1, N)
 v_cand = rng.uniform(0, 2, N)
 x_acc = x_cand[v_cand <= 2 * x_cand]
-print(f"accepted {x_acc.size} of {N} candidates"
-      f" ({x_acc.size / N:.2f}, expected 0.5)")
+print(f"accepted {x_acc.size} of {N} candidates")
+print(f"fraction {x_acc.size / N:.2f}, expected 0.5")
 
 # Q-Q plot: the ordered draws against F^{-1}((i - 1/2)/N)
 q_pit, q_acc = np.sort(x_pit), np.sort(x_acc)
