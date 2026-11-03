@@ -33,7 +33,7 @@ fig, ax = plt.subplots()
 filled = ax.contourf(mu_grid, s2_grid, T, 300, vmax=10,
                      cmap="Purples_r")
 bar = fig.colorbar(filled, ax=ax, location="top",
-                   label=r"$\tilde\lambda(\mathbf{x})$")
+                   label=r"$-2\log\lambda(\mathbf{x})$")
 lines = ax.contour(mu_grid, s2_grid, T, levels=thresholds,
                    colors=col.path)
 bar.locator = plt.MaxNLocator(4)

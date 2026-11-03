@@ -1,4 +1,4 @@
-# Example 9.2.7 (Figure 9.4): Likelihood of $\mu$ with $\sigma^2$ at its restricted and unrestricted MLEs, and the resulting likelihood ratio
+# Example 8.2.7 (Figure 8.4): Likelihood of $\mu$ with $\sigma^2$ at its restricted and unrestricted MLEs, and the resulting likelihood ratio
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
@@ -6,12 +6,10 @@ from preamble import *  # imports, rng, colours: see preamble.py
 x = np.array([1.1, 0.9, 1.4, 1.0, 1.2])
 
 
-# the likelihood of (mu, sigma^2): the product of the pdfs
+# the likelihood of (mu, sigma^2): the product of the pdfs,
+# the sample as a column so that mu and s2 can be arrays
 def likelihood(mu, s2):
-    L = 1
-    for xi in x:
-        L = L * norm.pdf(xi, mu, np.sqrt(s2))
-    return L
+    return np.prod(norm.pdf(x[:, None], mu, np.sqrt(s2)), axis=0)
 
 
 # the MLEs under H0: mu <= 1, and over the whole space
@@ -21,8 +19,8 @@ mu_hat = x.mean()
 s2_hat = np.mean((x - mu_hat)**2)
 
 # the likelihood ratio
-L_0 = likelihood(mu_0, s2_0)
-L_hat = likelihood(mu_hat, s2_hat)
+L_0, L_hat = likelihood(np.array([mu_0, mu_hat]),
+                        np.array([s2_0, s2_hat]))
 ratio = L_0 / L_hat
 print(f"lambda(x) = {ratio:.3f}")
 

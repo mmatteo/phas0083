@@ -35,6 +35,6 @@ for ax, lambda_0 in zip(axes, [100, 10, 5, 0]):
     ax.set_ylim(1e-6, 5)
     ax.set_title(f"$\\lambda_0={lambda_0}$")
     ax.set_ylabel("density")
-axes[-1].set_xlabel(r"$\tilde\lambda$")
+axes[-1].set_xlabel(r"$-2\log\lambda$")
 
 plt.show()

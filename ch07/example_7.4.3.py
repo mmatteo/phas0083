@@ -26,10 +26,10 @@ for name, t in [("MLE", mle), ("S^2", S2)]:
 fig, ax = plt.subplots()
 dark, light = shades(col.emp, 2)
 ax.hist(mle, bins=60, range=(0, 4), density=True,
-        histtype="step", color=dark,
+        histtype="step", color=dark, lw=1.5,
         label=r"$\hat\sigma^2$")
 ax.hist(S2, bins=60, range=(0, 4), density=True,
-        histtype="step", color=light, label="$S^2$")
+        histtype="step", color=light, lw=1.5, label="$S^2$")
 ax.axvline(sigma2, **ref)
 ax.set_xlabel("estimate of $\\sigma^2$")
 ax.set_ylabel("density")

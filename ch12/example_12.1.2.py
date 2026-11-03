@@ -35,11 +35,11 @@ ax.plot(t, chi2.sf(t, df=1), color=col.cdf)
 ax.axvline(c, label="$c$", **thr)
 ax.hlines(chi2.sf(c, df=1), 0, c, **thr)
 ax.axvline(t_obs, color=col.data,
-           label=r"$\tilde\lambda(x_\mathrm{obs})$")
+           label=r"$-2\log\lambda(x_\mathrm{obs})$")
 ax.hlines(p_value, 0, t_obs, color=col.data)
 ax.set_xlim(0, 6)
 ax.set_ylim(0, 0.1)
-ax.set_xlabel(r"$\tilde\lambda(x)$")
+ax.set_xlabel(r"$-2\log\lambda(x)$")
 ax.set_ylabel(r"$1-F$ = p-value")
 ax.legend()
 

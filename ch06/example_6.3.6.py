@@ -1,4 +1,4 @@
-# Example 6.3.6 (Figure 6.9): Means of samples of size $n=1,5,30,100$ from $\mathrm{Exponential}(\beta=2)$ (top to bottom), and the normal pdf of the central limit theorem
+# Example 6.3.6 (Figure 6.10): Means of samples of size $n=1,5,30,100$ from $\mathrm{Exponential}(\beta=2)$ (top to bottom), and the normal pdf of the central limit theorem
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

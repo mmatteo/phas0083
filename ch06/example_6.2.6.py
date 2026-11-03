@@ -1,4 +1,4 @@
-# Example 6.2.6 (Figure 6.5): Arrival times of two photons in order of arrival, in a sample of $n=1000$ pairs, with their sample means, variances and correlation coefficient
+# Example 6.2.6 (Figure 6.6): Arrival times of two photons in order of arrival, in a sample of $n=1000$ pairs, with their sample means, variances and correlation coefficient
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

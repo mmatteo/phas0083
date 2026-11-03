@@ -1,11 +1,11 @@
-# Example 6.4.1 (Figure 6.10): Sample mean (top) and sample variance (bottom) over an ensemble of $10^5$ simulated samples of size $n=5$ from $\mathcal{N}(2.0,0.25)$, with the normal $\mathcal{N}(\mu,\sigma^2/n)$ and the value of $\sigma^2$
+# Example 6.4.1 (Figure 6.11): Sample mean (top) and sample variance (bottom) over an ensemble of $10^5$ simulated samples of size $n=5$ from $\mathcal{N}(3.3,0.25)$, with the normal $\mathcal{N}(\mu,\sigma^2/n)$ and the value of $\sigma^2$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
 trials = 100_000
 n = 5
-mu = 2.0
+mu = 3.3
 sigma = 0.5
 
 # the ensemble: one simulated sample per row
@@ -22,7 +22,7 @@ print(f"var of x_bar: {x_bar.var():.4f} ({sigma**2 / n})")
 print(f"mean of S2: {S2.mean():.3f} (s^2 = {sigma**2})")
 
 fig, (ax1, ax2) = plt.subplots(2, 1)
-t = np.linspace(1, 3, 200)
+t = np.linspace(2.3, 4.3, 200)
 ax1.hist(x_bar, bins=50, density=True, color=col.hist)
 ax1.plot(t, norm.pdf(t, mu, sigma / np.sqrt(n)), **ref)
 ax1.set_xlabel(r"sample mean $\bar{x}$ [ns]")

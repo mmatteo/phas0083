@@ -19,8 +19,8 @@ result = minimize(nll, [1.0, 0.3],
                   callback=path.append)
 path = np.array(path)
 mu_hat, s2_hat = result.x
-print(f"minimum at mu = {mu_hat:.3f}")
-print(f"           sigma^2 = {s2_hat:.4f}")
+print(f"minimum: mu = {mu_hat:.3f}")
+print(f"sigma^2 = {s2_hat:.4f}")
 
 # the negative log-likelihood on a grid, for the background,
 # in one call: the sample as a column, with one axis for the

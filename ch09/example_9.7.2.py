@@ -1,4 +1,4 @@
-# Example 8.6.2 (Figure 8.7): Nonparametric bootstrap replicates of the sample mean
+# Example 9.7.2 (Figure 9.8): Nonparametric bootstrap replicates of the sample mean
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

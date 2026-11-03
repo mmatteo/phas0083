@@ -1,34 +1,38 @@
-# Example 8.5.1 (Figure 8.5): Bootstrap estimates of the bias (top) and variance (bottom) of the mean against $B$, in four runs
+# Example 8.5.1 (Figure 8.8): Simulated distribution of the likelihood-ratio statistic under $H_0$ (top) and its survival function (bottom), with the level-0.05 threshold
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-x = np.array([3.54, 5.13, 2.84, 4.48, 1.03, 16.92,
-              0.05, 14.05, 2.88, 1.50, 2.71, 1.56])
-n = x.size
-x_bar = x.mean()
-B_values = [10, 20, 50, 100, 200, 500, 1000, 2000]
+# -2 log of the likelihood ratio for H0: lambda = 0, with
+# the background nu known and the MLE of lambda kept at
+# or above zero
+def nlrt(x, nu):
+    lambda_hat = np.maximum(0, x - nu)
+    return (-2 * poisson.logpmf(x, nu)
+            + 2 * poisson.logpmf(x, lambda_hat + nu))
+
+
+nu = 50
+alpha = 0.05
+m = 100_000
+
+# the ensemble under H0: m counts from the background alone
+x = rng.poisson(nu, size=m)
+T_sorted = np.sort(nlrt(x, nu))
+
+# the threshold: the (m + 1)(1 - alpha)-th ordered value
+c = T_sorted[int((m + 1) * (1 - alpha)) - 1]
+print(f"threshold for level 0.05: -2 log lambda > {c:.3f}")
 
 fig, axes = plt.subplots(2, 1, sharex=True)
-# four repetitions of the simulation at every B
-for color in shades(col.emp, 4):
-    bias_B = []
-    var_B = []
-    for B in B_values:
-        # the replicates, then Bias_B* and Var_B*
-        x_star = rng.exponential(scale=x_bar, size=(B, n))
-        t_star = x_star.mean(axis=1)
-        bias_B.append(t_star.mean() - x_bar)
-        var_B.append(t_star.var(ddof=1))
-    axes[0].plot(B_values, bias_B, "o-", color=color)
-    axes[1].plot(B_values, var_B, "o-", color=color)
-
-# the exact values under the fitted model, 0 and x_bar^2 / n
-axes[0].axhline(0, **ref)
-axes[1].axhline(x_bar**2 / n, **ref)
-axes[0].set_ylabel("bias")
-axes[1].set_ylabel("variance")
-axes[1].set_xscale("log")
-axes[1].set_xlabel("$B$")
+axes[0].hist(T_sorted, density=True, bins=40, color=col.hist)
+axes[0].set_yscale("log")
+axes[0].set_ylabel("density")
+survival = np.linspace(1, 0, m, endpoint=False)
+axes[1].plot(T_sorted, survival, color=col.cdf)
+axes[1].set_ylabel("survival")
+axes[1].set_xlabel(r"$-2\log\lambda$")
+for ax in axes:
+    ax.axvline(c, **thr)
 
 plt.show()

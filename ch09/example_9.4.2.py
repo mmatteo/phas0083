@@ -1,4 +1,4 @@
-# Example 8.4.2 (Figure 8.4): Estimated 0.05 and 0.95 quantiles of $t^*-t$ against $B$
+# Example 9.4.2 (Figure 9.4): Estimated 0.05 and 0.95 quantiles of $t^*-t$ against $B$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py

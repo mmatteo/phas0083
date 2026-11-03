@@ -1,56 +1,34 @@
-# Example 9.5.1 (Figure 9.10): Bootstrap distribution of the likelihood-ratio statistic under $H_0$ (top) and its survival function (bottom), with the level-0.05 threshold
+# Example 9.5.1 (Figure 9.5): Bootstrap estimates of the bias (top) and variance (bottom) of the mean against $B$, in four runs
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-# the on/off log-likelihood, up to constant terms; a count
-# of zero would give log(0), so a rate of zero is replaced
-# by a tiny value
-def log_l(x, y, lam, nu, tau):
-    nu = max(nu, 1e-12)
-    lam = max(lam, 1e-12)
-    return (x * np.log(lam + nu) - (lam + nu)
-            + y * np.log(tau * nu) - tau * nu)
-
-
-# -2 log of the likelihood ratio for H0: lambda = 0, with
-# the MLEs under H0 and over the whole parameter space
-def lrt(x, y, tau):
-    if x <= y / tau:
-        return 0.0
-    nu_0 = (x + y) / (1 + tau)
-    nu_hat = y / tau
-    lam_hat = x - y / tau
-    return -2 * (log_l(x, y, 0.0, nu_0, tau)
-                 - log_l(x, y, lam_hat, nu_hat, tau))
-
-
-tau = 2.0
-B = 100_000
-alpha = 0.05
-
-# the simulation model under H0: the MLE of nu from the
-# observed pair, nu_0_hat = (x + y) / (1 + tau); its value
-# here
-nu_0_hat = 50
-x = rng.poisson(nu_0_hat, size=B)
-y = rng.poisson(tau * nu_0_hat, size=B)
-T = np.array([lrt(xi, yi, tau) for xi, yi in zip(x, y)])
-
-# the threshold: the (B + 1)(1 - alpha)-th ordered value
-T_sorted = np.sort(T)
-c = T_sorted[int((B + 1) * (1 - alpha)) - 1]
-print(f"threshold for level 0.05: T > {c:.3f}")
+x = np.array([3.54, 5.13, 2.84, 4.48, 1.03, 16.92,
+              0.05, 14.05, 2.88, 1.50, 2.71, 1.56])
+n = x.size
+x_bar = x.mean()
+B_values = [10, 20, 50, 100, 200, 500, 1000, 2000]
 
 fig, axes = plt.subplots(2, 1, sharex=True)
-axes[0].hist(T, density=True, bins=40, color=col.hist)
-axes[0].set_yscale("log")
-axes[0].set_ylabel("density")
-survival = np.linspace(1, 0, B, endpoint=False)
-axes[1].plot(T_sorted, survival, color=col.cdf)
-axes[1].set_ylabel("survival")
-axes[1].set_xlabel("$T$")
-for ax in axes:
-    ax.axvline(c, **thr)
+# four repetitions of the simulation at every B
+for color in shades(col.emp, 4):
+    bias_B = []
+    var_B = []
+    for B in B_values:
+        # the replicates, then Bias_B* and Var_B*
+        x_star = rng.exponential(scale=x_bar, size=(B, n))
+        t_star = x_star.mean(axis=1)
+        bias_B.append(t_star.mean() - x_bar)
+        var_B.append(t_star.var(ddof=1))
+    axes[0].plot(B_values, bias_B, "o-", color=color)
+    axes[1].plot(B_values, var_B, "o-", color=color)
+
+# the exact values under the fitted model, 0 and x_bar^2 / n
+axes[0].axhline(0, **ref)
+axes[1].axhline(x_bar**2 / n, **ref)
+axes[0].set_ylabel("bias")
+axes[1].set_ylabel("variance")
+axes[1].set_xscale("log")
+axes[1].set_xlabel("$B$")
 
 plt.show()

@@ -32,7 +32,7 @@ ax.plot(centres, chi2_density, **ref,
         label=r"$\chi^2_1$")
 ax.axvline(threshold, **thr)
 ax.set_yscale("log")
-ax.set_xlabel(r"$\tilde\lambda$")
+ax.set_xlabel(r"$-2\log\lambda$")
 ax.set_ylabel("density")
 ax.legend()
 
