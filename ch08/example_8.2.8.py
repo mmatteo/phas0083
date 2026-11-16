@@ -6,50 +6,46 @@ from preamble import *  # imports, rng, colours: see preamble.py
 x = np.array([1.1, 0.9, 1.4, 1.0, 1.2])
 
 
-# the negative log-likelihood of (mu, sigma^2): the sum
-# over the sample
 def nll(theta):
     mu, s2 = theta
     return -np.sum(norm.logpdf(x, mu, np.sqrt(s2)))
 
 
-# the unrestricted minimum and the minimum with mu <= 1,
-# both from the starting point (0.9, 0.25), with sigma^2
-# kept positive; the path records each step
-start = np.array([0.9, 0.25])
+# minimise nll from start, without and with mu <= 1
+start = [0.9, 0.25]
 path_free = [start]
-free = minimize(
+result_free = minimize(
     nll, start, bounds=[(None, None), (1e-9, None)],
-    callback=lambda p: path_free.append(p.copy()))
-path_restricted = [start]
-restricted = minimize(
+    callback=path_free.append)
+path_0 = [start]
+result_0 = minimize(
     nll, start, bounds=[(None, 1), (1e-9, None)],
-    callback=lambda p: path_restricted.append(p.copy()))
+    callback=path_0.append)
 path_free = np.array(path_free)
-path_restricted = np.array(path_restricted)
+path_0 = np.array(path_0)
 
 # the test statistic: twice the difference of the minima
-test = 2 * (restricted.fun - free.fun)
-print(f"-2 log lambda(x) = {test:.3f}")
+t_obs = 2 * (result_0.fun - result_free.fun)
+print(f"-2 log lambda(x) = {t_obs:.3f}")
 
-# the negative log-likelihood on a grid, for the background:
-# the sample as a column, one axis for the sample and two
-# for the grid, summed over the sample
+# compute the negative log-likelihood on a grid
 mu_grid, s2_grid = np.meshgrid(np.linspace(0.8, 1.4, 101),
                                np.linspace(0.01, 0.3, 101))
+# broadcasting: x[:, None, None] puts x on its own axis
 nll_grid = -np.sum(norm.logpdf(x[:, None, None], mu_grid,
                                np.sqrt(s2_grid)), axis=0)
 
 fig, ax = plt.subplots()
-ax.contourf(mu_grid, s2_grid, nll_grid, 100,
-            vmax=5, cmap="Purples_r")
-ax.axvline(1, **ref)
+contour = ax.contourf(mu_grid, s2_grid, nll_grid,
+                      levels=100, vmax=5, cmap="Purples_r")
+fig.colorbar(contour, label="neg. log-likelihood",
+             location="top", ticks=MaxNLocator(4))
+ax.axvline(1, color=col.ref, ls="--")
 ax.plot(path_free[:, 0], path_free[:, 1], "o-",
-        color=col.path, ms=3, label="unrestricted")
-ax.plot(path_restricted[:, 0], path_restricted[:, 1], "s--",
-        color=col.path, ms=3, label=r"$\mu\leq1$")
-ax.set_xlabel(r"$\mu$")
-ax.set_ylabel(r"$\sigma^2$")
+        color="tab:orange", ms=3, label="unrestricted")
+ax.plot(path_0[:, 0], path_0[:, 1], "s-",
+        color="tab:orange", ms=3, label=r"$\mu\leq1$")
+ax.set(xlabel=r"$\mu$", ylabel=r"$\sigma^2$")
 ax.legend()
 
 plt.show()

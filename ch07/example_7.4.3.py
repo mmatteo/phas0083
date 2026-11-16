@@ -5,17 +5,16 @@ from preamble import *  # imports, rng, colours: see preamble.py
 
 n = 5
 sigma2 = 1.0
-N = 100_000
+m = 100_000
 
-# the ensemble of simulated samples, and the two estimators
-# of sigma^2 on each: the MLE divides by n, S^2 by n - 1
-x = rng.normal(0, np.sqrt(sigma2), size=(N, n))
+# draw m samples of size n and compute both estimators
+x = rng.normal(0, np.sqrt(sigma2), size=(m, n))
 x_bar = x.mean(axis=1, keepdims=True)
 sum_sq = np.sum((x - x_bar)**2, axis=1)
 mle = sum_sq / n
 S2 = sum_sq / (n - 1)
 
-# bias, variance and mean squared error over the ensemble
+# compute bias, variance and mean squared error
 print("       bias    var    mse")
 for name, t in [("MLE", mle), ("S^2", S2)]:
     bias = t.mean() - sigma2
@@ -23,16 +22,15 @@ for name, t in [("MLE", mle), ("S^2", S2)]:
     mse = var + bias**2
     print(f"{name:4} {bias:6.3f}  {var:.3f}  {mse:.3f}")
 
+dark, light = shades(col.draws, 2)
 fig, ax = plt.subplots()
-dark, light = shades(col.emp, 2)
 ax.hist(mle, bins=60, range=(0, 4), density=True,
         histtype="step", color=dark, lw=1.5,
         label=r"$\hat\sigma^2$")
 ax.hist(S2, bins=60, range=(0, 4), density=True,
         histtype="step", color=light, lw=1.5, label="$S^2$")
-ax.axvline(sigma2, **ref)
-ax.set_xlabel("estimate of $\\sigma^2$")
-ax.set_ylabel("density")
+ax.axvline(sigma2, color=col.ref, ls="--")
+ax.set(xlabel=r"estimate of $\sigma^2$", ylabel="density")
 ax.legend()
 
 plt.show()

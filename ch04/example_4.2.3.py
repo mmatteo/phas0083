@@ -3,20 +3,22 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-E0, sigma0, sigma = 1000, 15, 20
+E0 = 1000
+sigma0 = 15
+sigma = 20
 N = 2000
 
-# the chain: Doppler-shifted energy, then the released one
-e = rng.normal(E0, sigma0, N)
+e = rng.normal(E0, sigma0, size=N)
 e_rel = rng.normal(e, sigma)
+s = np.sqrt(sigma0**2 + sigma**2)
 print(f"std of Doppler-shifted energy: {e.std():.1f}")
 print(f"std of released energies: {e_rel.std():.1f}")
-print(f"sqrt(15^2 + 20^2) = {np.sqrt(15**2 + 20**2):.1f}")
+print(f"sqrt({sigma0}^2 + {sigma}^2) = {s:.1f}")
 
-fig, ax = plt.subplots()
-ax.plot(e, e_rel, "o", color=col.emp, ms=2, alpha=0.3)
 lims = [E0 - 4 * sigma0, E0 + 4 * sigma0]
-ax.plot(lims, lims, **ref, label="$e'=e$")
+fig, ax = plt.subplots()
+ax.plot(e, e_rel, "o", color=col.draws, ms=2, alpha=0.3)
+ax.plot(lims, lims, color=col.ref, ls="--", label="$e'=e$")
 ax.set_xlabel("Doppler-shifted energy $e$ [keV]")
 ax.set_ylabel("released energy $e'$ [keV]")
 ax.legend()

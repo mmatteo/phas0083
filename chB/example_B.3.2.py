@@ -12,8 +12,7 @@ a = 0
 b = 2
 
 
-# the two components: the signal pdf and the flat
-# background pdf
+# signal and flat background pdfs
 def f_s(x):
     return norm.pdf(x, mu, sigma)
 
@@ -22,35 +21,34 @@ def f_b(x):
     return np.full(np.shape(x), 1 / (b - a))
 
 
-# the negative log-likelihood of the mixture weight
 def nll(w):
     return -np.sum(np.log(w * f_s(x) + (1 - w) * f_b(x)))
 
 
-res = minimize_scalar(nll, bounds=(0, 1), method="bounded")
-w_hat = res.x
+result = minimize_scalar(nll, bounds=(0, 1))
+w_hat = result.x
 print(f"MLE of the weight: {w_hat:.2f}")
 
 # the negative log-likelihood over a grid of weights
-w = np.linspace(0.01, 0.99, 200)
-nll_w = np.zeros(w.size)
-for i, w_i in enumerate(w):
-    nll_w[i] = nll(w_i)
+w_grid = np.linspace(0.01, 0.99, 200)
+nll_grid = np.array([nll(w) for w in w_grid])
 
-t = np.linspace(a, b, 200)
+u = np.linspace(a, b, 200)
 fig, (ax1, ax2) = plt.subplots(2, 1)
-ax1.plot(w, nll_w, color=col.like)
-ax1.axvline(w_hat, **thr, label=rf"$\hat w={w_hat:.2f}$")
-ax1.set_xlabel("$w$")
-ax1.set_ylabel("negative log-likelihood")
+ax1.plot(w_grid, nll_grid, color=col.like)
+ax1.axvline(w_hat, color=col.data,
+            label=rf"$\hat w={w_hat:.2f}$")
+ax1.set(xlabel="$w$", ylabel="negative log-likelihood")
 ax1.legend()
-ax2.vlines(x, 0, 0.5, color=col.data, label="sample")
-ax2.plot(t, w_hat * f_s(t) + (1 - w_hat) * f_b(t),
+ax2.plot(x, np.zeros_like(x), "|", color=col.data, ms=8,
+         label="sample")
+ax2.plot(u, w_hat * f_s(u) + (1 - w_hat) * f_b(u),
          color=col.pdf, label="mixture")
-ax2.plot(t, w_hat * f_s(t), **ref, label="signal")
-ax2.plot(t, (1 - w_hat) * f_b(t), **thr, label="background")
-ax2.set_xlabel("$x$")
-ax2.set_ylabel("pdf")
+ax2.plot(u, w_hat * f_s(u), color="tab:red",
+         label=r"$\hat w\,f_s$")
+ax2.plot(u, (1 - w_hat) * f_b(u), color="tab:brown",
+         label=r"$(1-\hat w)\,f_b$")
+ax2.set(xlabel="$x$", ylabel="weighted pdf")
 ax2.legend()
 
 plt.show()

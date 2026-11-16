@@ -13,18 +13,15 @@ for xi in x:
     L = L * norm.pdf(xi, mu_grid, np.sqrt(s2_grid))
 
 # the grid point of the maximum
-best = L == L.max()
-print(f"maximum: mu = {mu_grid[best][0]:.3f}")
-print(f"sigma^2 = {s2_grid[best][0]:.4f}")
+i, j = np.unravel_index(np.argmax(L), L.shape)
+print(f"maximum: mu = {mu_grid[i, j]:.3f}")
+print(f"sigma^2 = {s2_grid[i, j]:.4f}")
 
 fig, ax = plt.subplots()
 contour = ax.contourf(mu_grid, s2_grid, L, levels=30,
                       cmap="Purples")
-bar = fig.colorbar(contour, ax=ax, location="top",
-                   label="likelihood")
-bar.locator = plt.MaxNLocator(4)
-bar.update_ticks()
-ax.set_xlabel(r"$\mu$")
-ax.set_ylabel(r"$\sigma^2$")
+fig.colorbar(contour, label="likelihood", location="top",
+             ticks=MaxNLocator(4))
+ax.set(xlabel=r"$\mu$", ylabel=r"$\sigma^2$")
 
 plt.show()

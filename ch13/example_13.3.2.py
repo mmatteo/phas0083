@@ -10,22 +10,21 @@ tau_0 = 1.0
 y = 2.0
 sigma = 1.0
 
-# the posterior: the precisions add, the means are weighted
-# by the precisions
+# the posterior: the precisions add
 precision = 1 / tau_0**2 + 1 / sigma**2
 mu_1 = (mu_0 / tau_0**2 + y / sigma**2) / precision
 tau_1 = np.sqrt(1 / precision)
 
 theta = np.linspace(mu_0 - 4 * tau_0, y + 4 * sigma, 500)
+dark, light = shades(col.pdf, 2)
 fig, ax = plt.subplots()
-ax.plot(theta, norm.pdf(theta, mu_0, tau_0), color=col.hist,
+ax.plot(theta, norm.pdf(theta, mu_0, tau_0), color=light,
         label="prior")
 ax.plot(theta, norm.pdf(theta, y, sigma), color=col.like,
         label="likelihood")
-ax.plot(theta, norm.pdf(theta, mu_1, tau_1), color=col.pdf,
+ax.plot(theta, norm.pdf(theta, mu_1, tau_1), color=dark,
         label="posterior")
-ax.set_xlabel(r"$\theta$")
-ax.set_ylabel("density")
+ax.set(xlabel=r"$\theta$", ylabel="density")
 ax.legend()
 
 plt.show()

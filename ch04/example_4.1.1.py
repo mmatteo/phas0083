@@ -6,27 +6,26 @@ from preamble import *  # imports, rng, colours: see preamble.py
 N = 200
 
 # probability integral transformation, x = F^-1(u) = sqrt(u)
-u = rng.uniform(0, 1, N)
+u = rng.uniform(0, 1, size=N)
 x_pit = np.sqrt(u)
 
 # accept/reject with the envelope g(x) = 2 on [0, 1]
-x_cand = rng.uniform(0, 1, N)
-v_cand = rng.uniform(0, 2, N)
+x_cand = rng.uniform(0, 1, size=N)
+v_cand = rng.uniform(0, 2, size=N)
 x_acc = x_cand[v_cand <= 2 * x_cand]
 print(f"accepted {x_acc.size} of {N} candidates")
 print(f"fraction {x_acc.size / N:.2f}, expected 0.5")
 
-# Q-Q plot: the ordered draws against F^{-1}((i - 1/2)/N)
-q_pit, q_acc = np.sort(x_pit), np.sort(x_acc)
+# Q-Q plot: the ordered draws against F^{-1}((i - 1/2)/n)
+draws = [np.sort(x_pit), np.sort(x_acc)]
+titles = ["probability integral transf.", "accept/reject"]
 
 fig, axes = plt.subplots(2, 1, sharex=True)
-for ax, q, title in zip(axes, [q_pit, q_acc],
-                        ["probability integral transf.",
-                         "accept/reject"]):
+for ax, q, title in zip(axes, draws, titles):
     n = q.size
     p = (np.arange(1, n + 1) - 0.5) / n
-    ax.plot([0, 1], [0, 1], **ref)
-    ax.plot(np.sqrt(p), q, "o", color=col.emp, ms=2)
+    ax.plot([0, 1], [0, 1], color=col.ref, ls="--")
+    ax.plot(np.sqrt(p), q, "o", color=col.draws, ms=2)
     ax.set_title(f"{title}, {n} draws")
     ax.set_ylabel("quantile of the draws")
 axes[-1].set_xlabel("quantile of $F$")

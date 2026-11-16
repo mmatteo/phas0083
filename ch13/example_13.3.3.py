@@ -9,6 +9,7 @@ tau = 1.0
 sigma = 1.0
 observations = [2.0, 1.5, 3.0, 2.2]
 theta = np.linspace(-2, 4, 400)
+dark, light = shades(col.pdf, 2)
 
 fig, axes = plt.subplots(len(observations), 1, sharex=True)
 for i, (ax, y) in enumerate(zip(axes, observations), 1):
@@ -16,14 +17,13 @@ for i, (ax, y) in enumerate(zip(axes, observations), 1):
     precision = 1 / tau**2 + 1 / sigma**2
     mu_new = (mu / tau**2 + y / sigma**2) / precision
     tau_new = np.sqrt(1 / precision)
-    ax.plot(theta, norm.pdf(theta, mu, tau), color=col.hist,
+    ax.plot(theta, norm.pdf(theta, mu, tau), color=light,
             label="prior")
     ax.plot(theta, norm.pdf(theta, y, sigma),
             color=col.like, label="likelihood")
     ax.plot(theta, norm.pdf(theta, mu_new, tau_new),
-            color=col.pdf, label="posterior")
-    ax.set_title(f"update {i}: $y={y}$")
-    ax.set_ylabel("density")
+            color=dark, label="posterior")
+    ax.set(title=f"update {i}: $y={y}$", ylabel="density")
     # the posterior becomes the prior of the next update
     mu = mu_new
     tau = tau_new

@@ -1,34 +1,33 @@
-# Example 8.5.2 (Figure 8.10): Power of the level-0.05 test as a function of the signal $\lambda$, with the background known
+# Example 8.5.2 (Figure 8.10): Power of the level-0.05 one-sided test on the mean of a normal sample as a function of $\theta$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-# -2 log of the likelihood ratio for H0: lambda = 0, with
-# the background nu known and the MLE of lambda kept at
-# or above zero
-def nlrt(x, nu):
-    lambda_hat = np.maximum(0, x - nu)
-    return (-2 * poisson.logpmf(x, nu)
-            + 2 * poisson.logpmf(x, lambda_hat + nu))
+n = 5
+theta_0 = 1.0
+alpha = 0.05
+m = 20_000
+theta_values = np.linspace(0, 2.5, 26)
+c = 2.71  # the threshold of the previous example
 
 
-nu = 50
-m = 10_000
+def nlrt(x_bar):
+    return n * np.maximum(0, x_bar - theta_0)**2
 
-# the threshold of the previous example
-c = 2.674
 
-# the power at each lambda: the fraction of the simulated
-# counts that the test rejects
-lam_values = np.linspace(0, 30, 20)
+# power at each theta: the fraction of samples rejected
 power = []
-for lam in lam_values:
-    x = rng.poisson(lam + nu, size=m)
-    power.append(np.mean(nlrt(x, nu) > c))
+for theta in theta_values:
+    x = rng.normal(theta, 1, size=(m, n))
+    x_bar = x.mean(axis=1)
+    power.append(np.mean(nlrt(x_bar) > c))
+for i in [10, 20]:
+    print(f"power at theta = {theta_values[i]:.1f}: "
+          f"{power[i]:.3f}")
 
 fig, ax = plt.subplots()
-ax.plot(lam_values, power, "o-", color=col.emp)
-ax.set_xlabel(r"$\lambda$")
-ax.set_ylabel("power")
+ax.plot(theta_values, power, "o-", color=col.draws)
+ax.axhline(alpha, color=col.ref, ls=":")
+ax.set(xlabel=r"$\theta$", ylabel="power")
 
 plt.show()

@@ -5,13 +5,12 @@ from preamble import *  # imports, rng, colours: see preamble.py
 
 n = 10
 sigma = 1
-B = 10_000
+m = 10_000
 
 
-# the two-sided p-values of the z test of mu = 0 for B
-# samples of size n drawn at the given mu
+# p-values of the test of mu = 0, for samples drawn at mu
 def p_values(mu):
-    x = rng.normal(mu, sigma, (B, n))
+    x = rng.normal(mu, sigma, size=(m, n))
     z = x.mean(axis=1) / (sigma / np.sqrt(n))
     return 2 * norm.sf(np.abs(z))
 
@@ -22,9 +21,8 @@ for ax, mu, label in zip(axes, [0, 0.8], labels):
     p = p_values(mu)
     ax.hist(p, bins=20, range=(0, 1), density=True,
             color=col.hist)
-    ax.axhline(1, **ref)
-    ax.set_title(label)
-    ax.set_ylabel("density")
+    ax.axhline(1, color=col.ref, ls="--")
+    ax.set(title=label, ylabel="density")
     print(f"{label}: P(p<0.05) = {np.mean(p < 0.05):.3f}")
 axes[1].set_xlabel("p-value")
 

@@ -4,25 +4,25 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
 N = 500
-x = np.sort(rng.normal(0, 1, N))
+x = np.sort(rng.normal(0, 1, size=N))
 
-# quantiles of the ecdf, the ceil(pN)-th ordered draw, and F
-probs = [0.025, 0.5, 0.975]
-q_hat = [x[int(np.ceil(p * N)) - 1] for p in probs]
-q_true = [norm.ppf(p) for p in probs]
-for p, qh, qt in zip(probs, q_hat, q_true):
-    print(f"p={p:.3f}: {qh:.3f} (true {qt:.3f})")
+# quantile of the ecdf: the ceil(pN)-th ordered draw
+probs = np.array([0.025, 0.5, 0.975])
+# pN is rounded first: it is a product of floats
+rank = np.ceil(np.round(probs * N, 9))
+q_hat = x[rank.astype(int) - 1]
+q_true = norm.ppf(probs)
+for p, q, q_F in zip(probs, q_hat, q_true):
+    print(f"p={p:.3f}: {q:.3f} (true {q_F:.3f})")
 
+x_min = -4
 fig, ax = plt.subplots()
-ax.ecdf(x, color=col.emp, label=r"$\hat{F}_N$")
-for p, qh in zip(probs, q_hat):
-    ax.hlines(p, -4, qh, **thr)
-    ax.vlines(qh, 0, p, **thr)
+ax.ecdf(x, color=col.draws, label=r"$\hat{F}_N$")
+ax.hlines(probs, x_min, q_hat, color=col.ref, ls=":")
+ax.vlines(q_hat, 0, probs, color=col.ref, ls=":")
 ax.plot(q_true, probs, "x", color=col.data, ms=7, mew=1.5,
         label="true quantile")
-ax.set_xlim(-4, 4)
-ax.set_xlabel("$x$")
-ax.set_ylabel("cdf")
+ax.set(xlim=(x_min, 4), xlabel="$x$", ylabel="cdf")
 ax.legend()
 
 plt.show()

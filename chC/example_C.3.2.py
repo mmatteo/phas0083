@@ -3,8 +3,7 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-# the line energies in keV, the true offset and gain, and
-# the errors on the pulse heights in channels
+# energies in keV, true offset and gain, errors in channels
 E = np.array([60, 122, 356, 662, 1173, 1332])
 a_true = 20
 b_true = 1.5
@@ -31,13 +30,13 @@ chi2_min = np.sum(((h - a_hat - b_hat * E) / sigma)**2)
 print(f"a = {a_hat:.1f} +- {var_a**0.5:.1f}")
 print(f"b = {b_hat:.4f} +- {var_b**0.5:.4f}")
 print(f"chi2 = {chi2_min:.2f} for {E.size - 2} dof, "
-      f"p = {chi2.sf(chi2_min, E.size - 2):.2f}")
+      f"p = {chi2.sf(chi2_min, df=E.size - 2):.2f}")
 
-t = np.linspace(0, 1400, 2)
+u = np.linspace(0, 1400, 2)
 fig, ax = plt.subplots()
 ax.errorbar(E, h, yerr=sigma, fmt="o", color=col.data,
             ms=3, label="data")
-ax.plot(t, a_hat + b_hat * t, color=col.pdf, label="fit")
+ax.plot(u, a_hat + b_hat * u, color=col.pdf, label="fit")
 ax.set_xlabel("energy [keV]")
 ax.set_ylabel("pulse height [channels]")
 ax.legend()

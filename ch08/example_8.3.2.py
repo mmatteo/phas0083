@@ -16,15 +16,14 @@ def beta_2(theta):
 
 
 theta = np.linspace(0, 1, 400)
+dark, light = shades(col.cdf, 2)
 fig, ax = plt.subplots()
-color_1, color_2 = shades(col.cdf, 2)
-ax.plot(theta, beta_1(theta), color=color_1,
+ax.plot(theta, beta_1(theta), color=dark,
         label=r"$\beta_1$")
-ax.plot(theta, beta_2(theta), color=color_2,
+ax.plot(theta, beta_2(theta), color=light,
         label=r"$\beta_2$")
-ax.axvline(1 / 2, **ref)
-ax.set_xlabel(r"$\theta$")
-ax.set_ylabel("power")
+ax.axvline(1 / 2, color=col.ref, ls="--")
+ax.set(xlabel=r"$\theta$", ylabel="power")
 ax.legend()
 
 plt.show()

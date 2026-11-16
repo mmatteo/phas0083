@@ -9,11 +9,10 @@ print(f"D = {ks.statistic:.3f}, p-value = {ks.pvalue:.1g}")
 
 u = np.linspace(-3, 3, 100)
 fig, ax = plt.subplots()
-ax.ecdf(x, color=col.emp, label="data")
+ax.ecdf(x, color=col.data, label="data")
 ax.plot(u, norm.cdf(u), color=col.cdf, label="model")
 ax.plot(x, np.zeros_like(x), "|", color=col.data, ms=8)
-ax.set_xlabel("$x$")
-ax.set_ylabel("cdf")
+ax.set(xlabel="$x$", ylabel="cdf")
 ax.legend()
 
 plt.show()

@@ -1,4 +1,4 @@
-# Example 9.4.2 (Figure 9.4): Estimated 0.05 and 0.95 quantiles of $t^*-t$ against $B$
+# Example 11.4.2 (Figure 11.4): Estimated 0.05 and 0.95 quantiles of $t^*-t$ against $B$
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
@@ -10,27 +10,24 @@ x_bar = x.mean()
 B_values = [19, 39, 99, 199, 399, 599, 799, 999]
 
 fig, ax = plt.subplots()
-# four repetitions of the simulation at every B
-for color in shades(col.emp, 4):
+# repeat the simulation four times at every B
+for color in shades(col.draws, 4):
     q05 = []
     q95 = []
     for B in B_values:
-        # the ordered replicates of t* - t, the quantiles
-        # read as the (B + 1) p-th ordered values
+        # quantiles of t* - t from the ordered replicates
         x_star = rng.exponential(scale=x_bar, size=(B, n))
         d = np.sort(x_star.mean(axis=1)) - x_bar
-        q05.append(d[int((B + 1) * 0.05) - 1])
-        q95.append(d[int((B + 1) * 0.95) - 1])
+        q05.append(d[round((B + 1) * 0.05) - 1])
+        q95.append(d[round((B + 1) * 0.95) - 1])
     ax.plot(B_values, q05, "o-", color=color)
     ax.plot(B_values, q95, "o-", color=color)
 
-# the exact quantiles: the mean of n exponential variables
-# follows Gamma(n, x_bar / n)
+# exact quantiles: the mean follows Gamma(n, x_bar / n)
 for p in [0.05, 0.95]:
-    q = stats.gamma.ppf(p, n, scale=x_bar / n) - x_bar
-    ax.axhline(q, **ref)
-ax.set_xscale("log")
-ax.set_xlabel("$B$")
+    q = gamma.ppf(p, n, scale=x_bar / n) - x_bar
+    ax.axhline(q, color=col.ref, ls="--")
+ax.set(xscale="log", xlabel="$B$")
 ax.set_ylabel("quantiles of $t^* - t$")
 
 plt.show()

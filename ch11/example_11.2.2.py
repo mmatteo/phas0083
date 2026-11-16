@@ -1,40 +1,28 @@
-# Example 11.2.2 (Figure 11.6): Test statistic of $x_\mathrm{obs}=1010$ against $\lambda_0$ near the edge of the parameter space, with the bootstrap and chi-squared level-0.05 thresholds ($\nu=1000$)
+# Example 11.2.2 (Figure 11.1): ecdf of the decay times and cdf of the fitted exponential model (top); Q-Q plot of the decay times against the fitted model (bottom)
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from preamble import *  # imports, rng, colours: see preamble.py
 
-# -2 log likelihood ratio of the on/off model, with the
-# MLE of lambda kept at or above zero
-def nlrt(x, lambda_0, nu):
-    lambda_hat = np.maximum(0, x - nu)
-    return (-2 * poisson.logpmf(x, lambda_0 + nu)
-            + 2 * poisson.logpmf(x, lambda_hat + nu))
+x = np.array([3.54, 5.13, 2.84, 4.48, 1.03, 16.92,
+              0.05, 14.05, 2.88, 1.50, 2.71, 1.56])
+n = x.size
 
+x_bar = x.mean()
 
-x_obs = 1010
-nu = 1000
-alpha = 0.05
-B = 200_000
-lambda_values = np.linspace(0, 100, 51)
-obs = nlrt(x_obs, lambda_values, nu)
-# at each lambda_0 the threshold is the
-# (B + 1)(1 - alpha)-th ordered value of the B simulated
-# values
-threshold = np.zeros_like(lambda_values)
-for i, lambda_0 in enumerate(lambda_values):
-    x_star = rng.poisson(lambda_0 + nu, size=B)
-    T_sorted = np.sort(nlrt(x_star, lambda_0, nu))
-    threshold[i] = T_sorted[int((B + 1) * (1 - alpha)) - 1]
+# Q-Q plot: probabilities (i - 1/2) / n of the sorted data
+p = (np.arange(1, n + 1) - 0.5) / n
 
-fig, ax = plt.subplots()
-ax.plot(lambda_values, obs, color=col.like,
-        label="test value")
-ax.plot(lambda_values, threshold, "x", color=col.thr,
-        label="bootstrap")
-ax.axhline(chi2.ppf(1 - alpha, df=1), **ref,
-           label=r"$\chi^2_1$")
-ax.set_xlabel(r"$\lambda_0$")
-ax.set_ylabel("test statistic")
-ax.legend()
+u = np.linspace(0, 20, 200)
+fig, (ax1, ax2) = plt.subplots(2, 1)
+ax1.ecdf(x, color=col.data, label="ecdf")
+ax1.plot(u, expon.cdf(u, scale=x_bar), color=col.cdf,
+         label="fitted exponential")
+ax1.set(xlabel=r"decay time [$\mu$s]", ylabel="cdf")
+ax1.legend()
+ax2.plot(u, u, color=col.ref, ls="--")
+ax2.plot(expon.ppf(p, scale=x_bar), np.sort(x), "o",
+         color=col.data, ms=3)
+ax2.set_xlabel(r"fitted quantile [$\mu$s]")
+ax2.set_ylabel(r"decay time [$\mu$s]")
 
 plt.show()
